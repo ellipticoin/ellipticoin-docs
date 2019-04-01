@@ -2,3 +2,4 @@ site_name: Ellipticoin
 pages:
   - Home: index.md
   - API: api.md
+  - Consensus Roadmap: roadmap.md

@@ -6,7 +6,7 @@ anything that could be improved please [make a PR](https://github.com/ellipticoi
 
 ## Getting Started
 
-Ellipticoin standard tokens are equivalent to ERC20 tokens in Ethereum ecosystem. They can be used from anything from raising money in a crowd sale to [representing hamburgers](https://www.cnbc.com/2017/08/28/burger-king-russia-cryptocurrency-whoppercoin.html). This guide will show you how to build and deploy your own token to the Ellipticoin testnet. To make things more interesting we'll make our coin have a special property: every time you spend it the recipient will get twice as many coins as you sent. Obviously this currency won’t be very useful. But hey, the fed can print money and still remain relevant so why can’t we!
+Ellipticoin standard tokens are equivalent to ERC20 tokens in Ethereum ecosystem. They can be used from anything from raising money in a crowd sale to [representing hamburgers](https://www.cnbc.com/2017/08/28/burger-king-russia-cryptocurrency-whoppercoin.html). This guide will show you how to build and deploy your own token to the Ellipticoin testnet. To make things more interesting we'll make our coin have a special property: every time you spend it the recipient will get twice as many coins as you sent. Obviously this currency won’t be very useful. But hey, the fed can print money and people still trust them so why can't we!
 
 First you’ll need to install the ellipicoin wallet `ec-wallet`:
 
