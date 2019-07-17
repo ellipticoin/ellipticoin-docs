@@ -1,6 +1,5 @@
 site_name: Ellipticoin
-theme: readthedocs
 pages:
   - Home: index.md
-  - Developers: developers.md
+  - API: api.md
   - Consensus Roadmap: roadmap.md

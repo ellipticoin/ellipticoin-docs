@@ -1,7 +1,7 @@
 import math
 import datetime, time
 import time
-SECONDS_PER_BLOCK = 5
+BLOCKS_PER_SECOND = 5
 # This was chosen because it's an exponent of 2
 # And it works out to about a year (1.3 years) if blocks are produced every 5 seconds as planned.
 BLOCKS_PER_ERA = 2**23
@@ -10,48 +10,60 @@ BLOCKS_PER_ERA = 2**23
 NUMBER_OF_ERAS = 8
 # This scales the currency so we end up with 21,000,000 EC at the end of the final Era to match Bitcoin's supply.
 SCALE = 49
+
+# All units are are
+# Ellipticoin Base Units (one one thousandth of an Ellipticoin)
+
+# After the final era is complete issuance will stay constant
+# at that value until the total supply is issued.
 TOTAL_SUPPLY = 210000000000
 # Expected launch date. I'm optimistic.
 LAUNCH = datetime.datetime(2019, 9, 1, 0, 0)
 
+
 def reward_at_era(era):
-  return 2**(NUMBER_OF_ERAS - min(era, NUMBER_OF_ERAS)) * SCALE
+    return 2**(NUMBER_OF_ERAS - min(era, NUMBER_OF_ERAS)) * SCALE
+
 
 def last_block_with_reward():
-  total = 0
-  for era in range(0, NUMBER_OF_ERAS):
-    total += reward_at_era(era) * BLOCKS_PER_ERA
-  return BLOCKS_PER_ERA * NUMBER_OF_ERAS + (TOTAL_SUPPLY - total) / SCALE
+    total = 0
+    for era in range(0, NUMBER_OF_ERAS):
+        total += reward_at_era(era) * BLOCKS_PER_ERA
+    return BLOCKS_PER_ERA * NUMBER_OF_ERAS + (TOTAL_SUPPLY - total) / SCALE
+
 
 LAST_BLOCK_WITH_REWARD = last_block_with_reward()
 
 
 def reward_at(block_number):
-  reward = reward_at_era(reward_era(block_number))
+    reward = reward_at_era(reward_era(block_number))
 
-  if (block_number > LAST_BLOCK_WITH_REWARD):
-    return 0
-  elif (block_number == LAST_BLOCK_WITH_REWARD - 1):
-    return TOTAL_SUPPLY - (total_supply_at(block_number) + reward)
-  else:
-    return reward
+    if (block_number > LAST_BLOCK_WITH_REWARD):
+        return 0
+    elif (block_number == LAST_BLOCK_WITH_REWARD - 1):
+        return TOTAL_SUPPLY - (total_supply_at(block_number) + reward)
+    else:
+        return reward
+
 
 def block_number_to_date(block_number):
-  seconds = block_number * SECONDS_PER_BLOCK
-  return (LAUNCH + datetime.timedelta(seconds=seconds)).strftime("%Y-%m-%d")
+    seconds = block_number * BLOCKS_PER_SECOND
+    return (LAUNCH + datetime.timedelta(seconds=seconds)).strftime("%Y-%m-%d")
+
 
 def reward_era(block_number):
-  return min(int(block_number / BLOCKS_PER_ERA), NUMBER_OF_ERAS)
+    return min(int(block_number / BLOCKS_PER_ERA), NUMBER_OF_ERAS)
+
 
 def total_supply_at(block_number):
-  eras = int(block_number / BLOCKS_PER_ERA)
-  total = 0
-  for era in range(0, min(eras, NUMBER_OF_ERAS)):
-    total += reward_at_era(era) * BLOCKS_PER_ERA
-  if eras > NUMBER_OF_ERAS or eras * BLOCKS_PER_ERA != block_number:
-    for block_number in range(min(eras, 8) * BLOCKS_PER_ERA, block_number):
-      total += reward_at(block_number)
-  return total
+    eras = int(block_number / BLOCKS_PER_ERA)
+    total = 0
+    for era in range(0, min(eras, NUMBER_OF_ERAS)):
+        total += reward_at_era(era) * BLOCKS_PER_ERA
+    if eras > NUMBER_OF_ERAS or eras * BLOCKS_PER_ERA != block_number:
+        for block_number in range(min(eras, 8) * BLOCKS_PER_ERA, block_number):
+            total += reward_at(block_number)
+    return total
 
 
 print "|Block Number|     Date    | Block Reward | Total Supply at end of period"
@@ -59,11 +71,12 @@ print "-------------------------------------------------------"
 
 for block_number in range(0, (int(BLOCKS_PER_ERA * (NUMBER_OF_ERAS + 1.5))),
                           BLOCKS_PER_ERA / 2):
-  date = block_number_to_date(block_number)
-  reward = "varies" if reward_at(block_number) == 0 else reward_at(block_number)
-  total_supply = total_supply_at(block_number)
-  print("{:>12} | {} | {:>13} | {}".format(block_number, date, reward,
-                                           total_supply))
+    date = block_number_to_date(block_number)
+    reward = "varies" if reward_at(block_number) == 0 else reward_at(
+        block_number)
+    total_supply = total_supply_at(block_number)
+    print("{:>12} | {} | {:>13} | {}".format(block_number, date, reward,
+                                             total_supply))
 
 # Output
 # Values are in Ellipticoin Base Units (one onethousandth of an Ellipticoin)
