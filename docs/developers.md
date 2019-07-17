@@ -46,8 +46,8 @@ And run our test. It should fail with the following message:
     $ cargo test
     ...
     thread 'doubler_coin::tests::test_transfer' panicked at 'assertion failed: `(left == right)`
-  left: `20`,
- right: `40`', src/doubler_coin.rs:57:9
+    left: `20`,
+    right: `40`', src/doubler_coin.rs:57:9
     ...
     test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out
 
